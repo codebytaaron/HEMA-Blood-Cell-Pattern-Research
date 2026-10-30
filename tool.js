@@ -42,7 +42,11 @@ async function analyze() {
   await ready;
   btn.disabled = false; btn.textContent = "Analyze image";
   if (!model) return;
-  const preds = (await model.predict(preview)).sort((a, b) => b.probability - a.probability);
+  // Score a full-resolution copy so results never depend on the on-screen image size.
+  const canvas = document.createElement("canvas");
+  canvas.width = preview.naturalWidth; canvas.height = preview.naturalHeight;
+  canvas.getContext("2d").drawImage(preview, 0, 0);
+  const preds = (await model.predict(canvas)).sort((a, b) => b.probability - a.probability);
   const best = preds[0], p = best.probability;
   $("topName").textContent = best.className;
   $("badge").textContent = p >= .8 ? "Strong match" : p >= .5 ? "Moderate match" : "Uncertain";

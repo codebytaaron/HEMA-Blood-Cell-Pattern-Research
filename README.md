@@ -1,5 +1,7 @@
 # HEMA · Blood Cell Pattern Research
 
+**Live:** https://codebytaaron.github.io/HEMA-Blood-Cell-Pattern-Research/
+
 A free, browser-based tool that scores a microscope image of a white blood cell against four learned types: **Eosinophil, Lymphocyte, Monocyte, Neutrophil**. Runs entirely in the browser; nothing is uploaded.
 
 ## Model (v2)
