@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HEMA · Analyze a cell</title>
+<meta name="description" content="Upload a white blood cell image and see which of four learned cell types it most resembles. Runs privately in your browser.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><text x='16' y='23' font-family='Georgia' font-size='19' fill='white' text-anchor='middle'>H</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="wrap nav">
+  <a href="index.html" class="brand">HEMA</a>
+  <nav><a href="index.html#how">How it works</a><a href="index.html#cells">Cells</a><a href="index.html#sources">Sources</a></nav>
+</header>
+
+<main class="app">
+  <a href="index.html" class="back">← Back to home</a>
+
+  <ol class="steps big" id="steps">
+    <li class="on"><b>1</b>Upload</li>
+    <li><b>2</b>Confirm</li>
+    <li><b>3</b>Results</li>
+  </ol>
+
+  <!-- Step 1 -->
+  <section class="view" id="v1">
+    <h1 class="title">Upload a blood cell image</h1>
+    <p class="sub">Choose a stained blood smear image. It stays on your device and is compared with four learned white blood cell patterns.</p>
+    <label class="bigdrop" id="drop" tabindex="0">
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V4m0 0L8 8m4-4l4 4M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+      <strong>Drop a cell image here</strong>
+      <span>JPG, PNG or WebP</span>
+      <span class="btn sm">Browse files</span>
+    </label>
+    <div class="try">
+      <span>No image? Try a sample:</span>
+      <div class="sample-row" id="samples"></div>
+    </div>
+    <ul class="tips">
+      <li>Use one white blood cell near the centre, not a whole field of cells or a screenshot.</li>
+      <li>Works best on stained (Wright or Giemsa-type) smears at high magnification.</li>
+    </ul>
+    <p class="err" id="err" hidden></p>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="view" id="v2" hidden>
+    <h1 class="title">Confirm your image</h1>
+    <p class="sub">Check this is a single white blood cell. The image is cropped to a centred square before analysis.</p>
+    <div class="confirm">
+      <img id="preview" alt="Your selected image">
+    </div>
+    <div class="actions">
+      <button class="btn" type="button" id="analyze">Analyze image</button>
+      <button class="link-btn" type="button" id="change">Choose a different image</button>
+    </div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="view" id="v3" hidden>
+    <h1 class="title">Results</h1>
+    <div class="rcard">
+      <div class="rhead">
+        <span>Closest learned pattern</span>
+        <span class="badge" id="badge"></span>
+      </div>
+      <div class="rgrid">
+        <img id="thumb" alt="Analyzed image">
+        <div>
+          <h2 id="topName"></h2>
+          <div class="bars" id="bars"></div>
+        </div>
+      </div>
+      <p class="about" id="about"></p>
+      <p class="fine">These are the model's similarity scores: how closely the image resembles each learned cell pattern. They are not a diagnosis and not the probability of any disease.</p>
+      <button class="btn full" type="button" id="again">Try another image</button>
+    </div>
+  </section>
+
+  <p class="status" id="status">Loading model…</p>
+
+  <div class="disc">
+    <p><strong>Research use only.</strong> Not a medical device or a diagnosis. Always consult a licensed medical professional.</p>
+    <a href="index.html#privacy">Full disclaimer →</a>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+<script src="tool.js"></script>
+</body>
+</html>

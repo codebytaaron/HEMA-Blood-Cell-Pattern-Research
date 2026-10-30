@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HEMA · Blood cell pattern research</title>
+<meta name="description" content="Upload a microscopic white blood cell image. HEMA compares it against learned cellular patterns, privately in your browser.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%239e1b32'/><circle cx='16' cy='16' r='6' fill='%23faf8f5'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="wrap nav">
+  <a href="#" class="brand">HEMA</a>
+  <nav><a href="#how">How it works</a><a href="#cells">Cells</a><a href="#sources">Sources</a></nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="intro">
+      <p class="eyebrow">White blood cell pattern tool</p>
+      <h1>See which blood cell an image resembles.</h1>
+      <p class="lede">Upload a microscope image of a white blood cell. HEMA scores it against four learned cell types, privately in your browser.</p>
+      <div class="cta">
+        <a class="btn" href="tool.html">Open the tool</a>
+        <a href="#how" class="link">How it works →</a>
+      </div>
+      <ul class="checks">
+        <li>Runs on your device</li>
+        <li>Nothing is uploaded</li>
+        <li>Four cell types</li>
+        <li>Not a diagnosis</li>
+      </ul>
+    </div>
+
+    <a href="tool.html" class="tool mock" aria-label="Open the tool">
+      <div class="win"><span></span><span></span><span></span><div class="pill"><i></i>On-device · HEMA</div></div>
+      <div class="tool-body">
+        <div class="mock-brand">HEMA</div>
+        <ol class="steps"><li class="on"><b>1</b>Upload</li><li class="on"><b>2</b>Confirm</li><li class="on"><b>3</b>Results</li></ol>
+        <div class="top"><span>Result</span></div>
+        <div class="mock-top">Eosinophil <small>Strong match</small></div>
+        <div class="mock-grid">
+          <img src="samples/eosinophil.jpg" alt="">
+          <div class="bars">
+            <div class="bar best"><span>Eosinophil</span><div class="track"><div class="fill" style="width:100%"></div></div><em>100%</em></div>
+            <div class="bar"><span>Neutrophil</span><div class="track"><div class="fill" style="width:0"></div></div><em>0%</em></div>
+            <div class="bar"><span>Monocyte</span><div class="track"><div class="fill" style="width:0"></div></div><em>0%</em></div>
+            <div class="bar"><span>Lymphocyte</span><div class="track"><div class="fill" style="width:0"></div></div><em>0%</em></div>
+          </div>
+        </div>
+        <p class="mock-note">These are the model's similarity scores: how closely the image resembles each learned pattern. They are not a diagnosis.</p>
+        <div class="mock-btn">Try another image</div>
+      </div>
+    </a>
+  </section>
+
+  <section id="how" class="section">
+    <h2 class="h">How it works</h2>
+    <ol class="how">
+      <li><span>1</span><div><strong>Upload</strong><p>Choose a stained blood smear image with one white blood cell near the centre.</p></div></li>
+      <li><span>2</span><div><strong>Compare</strong><p>A MobileNetV2 model in your browser compares it with patterns learned from 3,827 cell images labelled by clinical pathologists <a class="ref" href="#src1">[1]</a>.</p></div></li>
+      <li><span>3</span><div><strong>Read</strong><p>You get a score for each cell type. On 957 held-out images from the same dataset, the top score matched the pathologists' label 97.8% of the time. Expect lower accuracy on images from other labs or stains.</p></div></li>
+    </ol>
+  </section>
+
+  <section id="cells" class="section">
+    <h2 class="h">The four cell types</h2>
+    <div class="cells" id="cellGrid"></div>
+  </section>
+
+  <section id="privacy" class="section note">
+    <div>
+      <h2 class="h">Private by design</h2>
+      <p>Your image is analyzed in your browser and is never uploaded or stored. The page loads its code and fonts from public CDNs (jsDelivr and Google Fonts). HEMA has no accounts, cookies or analytics.</p>
+    </div>
+    <div>
+      <h2 class="h">Research only</h2>
+      <p>HEMA is an educational tool, not a medical device. It learned only from normal cells of people without infection, blood disease or cancer <a class="ref" href="#src1">[1]</a>, so it cannot detect leukemia or any other condition. Its scores are not the chance that anyone is ill.</p>
+    </div>
+  </section>
+
+  <section id="sources" class="section">
+    <h2 class="h">Sources</h2>
+    <ol class="sources">
+      <li id="src1">Acevedo A, Merino A, Alférez S, Molina Á, Boldú L, Rodellar J. A dataset of microscopic peripheral blood cell images for development of automatic recognition systems. <em>Data in Brief</em>. 2020;30:105474. <a href="https://doi.org/10.1016/j.dib.2020.105474" target="_blank" rel="noopener">doi:10.1016/j.dib.2020.105474</a></li>
+      <li id="src2">Acevedo A, et al. Peripheral blood cell image dataset (Hospital Clinic of Barcelona; May Grünwald-Giemsa stain; CellaVision DM96). Mendeley Data, v1. <a href="https://doi.org/10.17632/snkd93bnjr.1" target="_blank" rel="noopener">doi:10.17632/snkd93bnjr.1</a>. Licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</li>
+      <li id="src3">MedlinePlus, U.S. National Library of Medicine. <a href="https://medlineplus.gov/lab-tests/blood-differential/" target="_blank" rel="noopener">Blood Differential</a>.</li>
+      <li id="src4"><a href="https://digital.haematologica.org/wp-content/uploads/flipbook/48/files/basic-html/page21.html" target="_blank" rel="noopener"><em>Haematologica Atlas of Hematologic Cytology</em></a>. Normal peripheral blood cells.</li>
+    </ol>
+    <p class="credit">All cell images, including the samples on this page, come from the dataset in [2], used under CC BY 4.0, via the copy at <a href="https://github.com/Bbennett21/White-Blood-Cell-Classification" target="_blank" rel="noopener">Bbennett21/White-Blood-Cell-Classification</a>. Changes: HEMA used a 4,800-image subset of four classes, centre-cropped and resized to 224 × 224 for training. The dataset's authors have not endorsed HEMA.</p>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <span>HEMA · Blood Cell Pattern Research</span>
+  <span><a href="https://github.com/codebytaaron/HEMA-Blood-Cell-Pattern-Research" target="_blank" rel="noopener">GitHub</a> · <a href="#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
