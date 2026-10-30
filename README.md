@@ -4,12 +4,12 @@
 
 A free, browser-based tool that scores a microscope image of a white blood cell against four learned types: **Eosinophil, Lymphocyte, Monocyte, Neutrophil**. Runs entirely in the browser; nothing is uploaded.
 
-## Model (v2)
-- MobileNet feature extractor (from the original Teachable Machine export) with a retrained classification head, in TensorFlow.js (`model/`).
-- Data: 4,784 images (≈1,200 per class; neutrophils are about half band, half segmented) from the Acevedo et al. dataset (see Credits), via the copy at [Bbennett21/White-Blood-Cell-Classification](https://github.com/Bbennett21/White-Blood-Cell-Classification). 3,827 train (with horizontal-flip augmentation), 957 held out.
-- Held-out test (957 images): **97.8% overall**: Eosinophil 233/238, Lymphocyte 235/239, Monocyte 231/240, Neutrophil 237/240.
-- v1 (Teachable Machine, 200/class) scored 69% on the same test set, with monocytes at 7.9%.
-- The split is random by image, not by patient. All images come from one hospital, one stain (May Grünwald-Giemsa) and one analyzer (CellaVision DM96), and only from people without infection, blood disease or cancer, so accuracy on other images will be lower.
+## Model
+- MobileNetV2 feature extractor (frozen, from a Teachable Machine export) with a retrained two-layer classifier, in TensorFlow.js (`model/`).
+- Data: 4,800 images (1,200 per class) from the Acevedo et al. dataset (see Credits). Every fifth image per class held out: 3,840 train / 960 test. The exact split is in `research/split.txt`.
+- Test result: **936/960 (97.5%)**: Eosinophil 236, Lymphocyte 229, Monocyte 237, Neutrophil 234 (of 240 each). The first Teachable Machine model scored 670/960 (69.8%) on the same images.
+- All images come from one hospital, one stain and one analyzer, from donors without infection, blood disease or cancer, and the split is by image, not by person. Expect lower accuracy elsewhere.
+- Full write-up: [research page](https://codebytaaron.github.io/HEMA-Blood-Cell-Pattern-Research/research.html).
 
 ## Run
 Static site: `index.html`, `style.css`, `app.js`. Serve with any static server, e.g. `python3 -m http.server`.

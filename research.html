@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research &amp; teaching · HEMA</title>
+<meta name="description" content="How HEMA was built and tested: data, method, results, limitations, a classroom lesson and how to cite it.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><text x='16' y='23' font-family='Georgia' font-size='19' fill='white' text-anchor='middle'>H</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+
+<header class="wrap nav">
+  <a href="index.html" class="brand">HEMA</a>
+  <nav><a href="index.html#how">How it works</a><a href="research.html" aria-current="page">Research</a><a href="index.html#sources">Sources</a></nav>
+</header>
+
+<main class="doc">
+  <section class="doc-head">
+    <p class="eyebrow">For educators and researchers</p>
+    <h1>Research &amp; teaching</h1>
+    <p>HEMA is free to use for learning and research. It is not for diagnosis or any medical decision.</p>
+  </section>
+
+  <section class="doc-card">
+    <h2>At a glance</h2>
+    <div class="stats">
+      <div><b>97.5%</b><span>correct on 960 held-out test images</span></div>
+      <div><b>3,840</b><span>training images</span></div>
+      <div><b>4</b><span>white blood cell types</span></div>
+      <div><b>0</b><span>images sent to a server</span></div>
+    </div>
+    <p class="muted small">All figures are from images in the same dataset as the training data. Accuracy on images from other hospitals, stains or microscopes has not been measured.</p>
+  </section>
+
+  <section class="doc-card">
+    <h2>Data</h2>
+    <p>Images come from a public dataset of 17,092 normal peripheral blood cell images collected at the Hospital Clinic of Barcelona between 2015 and 2019 <a class="ref" href="#r1">[1]</a>. Smears were stained with May Grünwald-Giemsa, each cell was photographed by a CellaVision DM96 analyzer at 360 × 363 pixels, and every image was labelled by expert clinical pathologists. Donors had no infection, blood disease or cancer and were taking no medication at the time of collection.</p>
+    <ul>
+      <li><strong>Subset.</strong> 1,200 images were drawn at random from each of four classes: eosinophil, lymphocyte, monocyte and neutrophil (4,800 in total).</li>
+      <li><strong>Neutrophils.</strong> The dataset's neutrophil class mixes mature segmented cells and younger band cells; in HEMA's subset about half are band forms.</li>
+      <li><strong>Split.</strong> Within each class, every fifth image went to the test set: 3,840 training and 960 test images, 240 per class. The full list is published as <a href="research/split.txt">split.txt</a>.</li>
+    </ul>
+  </section>
+
+  <section class="doc-card">
+    <h2>Method</h2>
+    <ul>
+      <li><strong>Features.</strong> A MobileNetV2 network, taken frozen from a Google Teachable Machine export, turns each image into 1,280 numbers that describe its shapes, textures and colours.</li>
+      <li><strong>Classifier.</strong> A small two-layer network (100 hidden units, then 4 outputs) was trained on those features to pick a cell type.</li>
+      <li><strong>Pre-processing.</strong> Each image is centre-cropped to a square and resized to 224 × 224 pixels. Training also used a mirrored copy of every image.</li>
+      <li><strong>Training.</strong> Adam optimiser (learning rate 0.0005), 40 epochs, batch size 64, dropout 0.3, L2 regularisation 0.001. Run in the browser with TensorFlow.js 1.3.1.</li>
+      <li><strong>Evaluation.</strong> Test images were scored through the same code the public tool uses. A prediction counts as correct when the top score matches the pathologists' label.</li>
+    </ul>
+  </section>
+
+  <section class="doc-card">
+    <h2>Results</h2>
+    <p>936 of 960 test images were classified correctly (97.5%).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Cell type</th><th>Correct</th><th>Recall</th><th>Precision</th></tr></thead>
+        <tbody>
+          <tr><td>Eosinophil</td><td>236 / 240</td><td>98.3%</td><td>98.7%</td></tr>
+          <tr><td>Lymphocyte</td><td>229 / 240</td><td>95.4%</td><td>99.6%</td></tr>
+          <tr><td>Monocyte</td><td>237 / 240</td><td>98.8%</td><td>93.3%</td></tr>
+          <tr><td>Neutrophil</td><td>234 / 240</td><td>97.5%</td><td>98.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted small">Recall: of the cells that really were this type, how many HEMA found. Precision: of the cells HEMA called this type, how many really were.</p>
+
+    <h3>Where it gets confused</h3>
+    <p>Rows are the pathologists' label; columns are HEMA's top answer.</p>
+    <div class="table-wrap">
+      <table class="cm">
+        <thead><tr><th></th><th>Eos</th><th>Lym</th><th>Mon</th><th>Neu</th></tr></thead>
+        <tbody>
+          <tr><th>Eosinophil</th><td class="hit">236</td><td>0</td><td>2</td><td>2</td></tr>
+          <tr><th>Lymphocyte</th><td>1</td><td class="hit">229</td><td>10</td><td>0</td></tr>
+          <tr><th>Monocyte</th><td>1</td><td>1</td><td class="hit">237</td><td>1</td></tr>
+          <tr><th>Neutrophil</th><td>1</td><td>0</td><td>5</td><td class="hit">234</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The most common mistake is calling a lymphocyte a monocyte (10 of 240). Both have a large nucleus and bluish cytoplasm, and large lymphocytes can look similar to monocytes <a class="ref" href="#r3">[3]</a>.</p>
+
+    <h3>Compared with the first version</h3>
+    <p>HEMA's first model was trained in Teachable Machine on 200 images per class. On the same 960 test images it scored 670 / 960 (69.8%), and only 21 of 240 monocytes (8.8%) were labelled correctly; most were called eosinophils, lymphocytes or neutrophils. Retraining the classifier on six times more data fixed this. The first model's training images were picked separately, so some may overlap this test set.</p>
+  </section>
+
+  <section class="doc-card">
+    <h2>Limitations</h2>
+    <ul>
+      <li><strong>One source.</strong> Every image comes from one hospital, one stain and one analyzer. Images from elsewhere will likely score lower.</li>
+      <li><strong>Healthy donors only.</strong> HEMA has never seen abnormal or cancerous cells, so it cannot detect leukemia or any other condition.</li>
+      <li><strong>Split by image, not by person.</strong> The public dataset doesn't say which images came from the same person, so cells from one donor may appear in both training and test sets. This can make results look better than they would be on new patients.</li>
+      <li><strong>Four classes, forced choice.</strong> Basophils, platelets, red cells, or a photo of anything else will still be scored as one of the four types.</li>
+      <li><strong>No external validation.</strong> HEMA has not been tested by an independent lab or compared with clinicians.</li>
+    </ul>
+  </section>
+
+  <section class="doc-card">
+    <h2>Use HEMA in your class</h2>
+    <p>A 45-minute lesson on what image AI can and can't do in medicine.</p>
+    <ol>
+      <li><strong>Introduce (10 min).</strong> What a classifier does: it compares an image to patterns it learned. Read the <a href="index.html#how">How it works</a> section together and look at the four cell types.</li>
+      <li><strong>Explore (15 min).</strong> Students run the <a href="tool.html">tool</a> on the four samples, then on a blurry image, a red blood cell and something that isn't a cell at all, and note what happens.</li>
+      <li><strong>Discuss (15 min).</strong> Use the questions below and the confusion table above.</li>
+      <li><strong>Reflect (5 min).</strong> Each student writes one thing a tool like this should never be used for.</li>
+    </ol>
+    <h3>Discussion questions</h3>
+    <ul>
+      <li>Why is a similarity score not the same as the chance someone has a disease?</li>
+      <li>HEMA still gives a confident score to a photo of a cat. What does that tell you about AI models?</li>
+      <li>Why might lymphocytes and monocytes be the pair HEMA mixes up most?</li>
+      <li>HEMA scored 97.5% on images from one hospital. Would you expect the same score on images from your local lab? Why?</li>
+      <li>The model only learned from healthy people. What could go wrong if someone used it on a patient with leukemia?</li>
+      <li>Why might it matter that HEMA runs on your device instead of a server?</li>
+    </ul>
+  </section>
+
+  <section class="doc-card">
+    <h2>How to cite HEMA</h2>
+    <div class="cite">
+      <p id="citeText">Aaron, T. (2026). HEMA: white blood cell pattern research tool [Computer software]. https://codebytaaron.github.io/HEMA-Blood-Cell-Pattern-Research/</p>
+      <button class="copy" type="button" id="copy">Copy</button>
+    </div>
+    <p class="muted small">If you use the training data, also cite the dataset [1].</p>
+  </section>
+
+  <section class="doc-card">
+    <h2>References</h2>
+    <ol class="sources">
+      <li id="r1">Acevedo A, Merino A, Alférez S, Molina Á, Boldú L, Rodellar J. A dataset of microscopic peripheral blood cell images for development of automatic recognition systems. <em>Data in Brief</em>. 2020;30:105474. <a href="https://doi.org/10.1016/j.dib.2020.105474" target="_blank" rel="noopener">doi:10.1016/j.dib.2020.105474</a>. Data: <a href="https://doi.org/10.17632/snkd93bnjr.1" target="_blank" rel="noopener">doi:10.17632/snkd93bnjr.1</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</li>
+      <li id="r2">Sandler M, Howard A, Zhu M, Zhmoginov A, Chen LC. MobileNetV2: Inverted residuals and linear bottlenecks. <em>CVPR</em>. 2018. <a href="https://doi.org/10.48550/arXiv.1801.04381" target="_blank" rel="noopener">arXiv:1801.04381</a>.</li>
+      <li id="r3"><a href="https://digital.haematologica.org/wp-content/uploads/flipbook/48/files/basic-html/page21.html" target="_blank" rel="noopener"><em>Haematologica Atlas of Hematologic Cytology</em></a>. Normal peripheral blood cells.</li>
+    </ol>
+  </section>
+
+  <p class="doc-foot"><a href="tool.html" class="btn">Open the tool</a></p>
+</main>
+
+<footer class="wrap foot">
+  <span>HEMA · Blood Cell Pattern Research</span>
+  <span><a href="https://github.com/codebytaaron/HEMA-Blood-Cell-Pattern-Research" target="_blank" rel="noopener">GitHub</a> · <a href="index.html#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
+</footer>
+
+<script>
+document.getElementById("copy").addEventListener("click", async e => {
+  try { await navigator.clipboard.writeText(document.getElementById("citeText").textContent); e.target.textContent = "Copied"; }
+  catch { e.target.textContent = "Select and copy"; }
+  setTimeout(() => e.target.textContent = "Copy", 2000);
+});
+</script>
+</body>
+</html>
