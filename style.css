@@ -230,3 +230,5 @@ td{white-space:nowrap}
 .sample-row .sample{position:relative}
 .sample-row .tip{width:340px;max-width:calc(100vw - 32px)}
 .sample-row .sample:nth-child(n+3) .tip{left:auto;right:0}
+
+.doc{grid-template-columns:minmax(0,1fr)}

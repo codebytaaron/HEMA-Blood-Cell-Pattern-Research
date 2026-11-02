@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><text x='16' y='23' font-family='Georgia' font-size='19' fill='white' text-anchor='middle'>H</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
@@ -139,8 +139,13 @@
 
 <script>
 document.getElementById("copy").addEventListener("click", async e => {
-  try { await navigator.clipboard.writeText(document.getElementById("citeText").textContent); e.target.textContent = "Copied"; }
-  catch { e.target.textContent = "Select and copy"; }
+  const text = document.getElementById("citeText").textContent;
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+  }
+  e.target.textContent = "Copied";
   setTimeout(() => e.target.textContent = "Copy", 2000);
 });
 </script>

@@ -37,6 +37,7 @@ function load(src) {
 }
 
 function handleFile(f) {
+  input.value = ""; // so choosing the same file again still works
   if (!f) return;
   if (!f.type.startsWith("image/")) { $("err").textContent = "That file isn't an image. Use a JPG, PNG or WebP."; $("err").hidden = false; return; }
   load(URL.createObjectURL(f));
@@ -54,16 +55,31 @@ async function analyze() {
   canvas.getContext("2d").drawImage(preview, 0, 0);
   const preds = (await model.predict(canvas)).sort((a, b) => b.probability - a.probability);
   const best = preds[0], p = best.probability;
-  $("topName").textContent = best.className;
-  $("badge").textContent = p >= .8 ? "Strong match" : p >= .5 ? "Moderate match" : "Uncertain";
+  const notCell = flat(canvas);
+  $("topName").textContent = notCell ? "Not a cell image" : best.className;
+  $("badge").textContent = notCell ? "No match" : p >= .8 ? "Strong match" : p >= .5 ? "Moderate match" : "Uncertain";
   $("thumb").src = preview.src;
   $("bars").innerHTML = preds.map((x, i) => `
     <div class="bar${i ? "" : " best"}"><span>${x.className}</span><div class="track"><div class="fill" data-w="${x.probability * 100}"></div></div><em>${Math.round(x.probability * 100)}%</em></div>`).join("");
-  $("about").textContent = p < .5
+  $("about").textContent = notCell
+    ? "This doesn't look like a microscope image. Hemra always picks one of four cell types, so this result isn't meaningful."
+    : p < .5
     ? "No cell type stands out. The image may be blurry, use a different stain, show several cells, or not be a white blood cell."
+    : p < .8
+    ? "Only a moderate match. Check the image shows a single stained white blood cell. " + ABOUT[best.className]
     : ABOUT[best.className];
   go(3);
   requestAnimationFrame(() => requestAnimationFrame(() => document.querySelectorAll(".fill").forEach(f => f.style.width = f.dataset.w + "%")));
+}
+
+// True when an image has almost no detail (e.g. a blank or single-colour picture).
+function flat(canvas) {
+  const s = document.createElement("canvas"); s.width = s.height = 64;
+  const g = s.getContext("2d"); g.drawImage(canvas, 0, 0, 64, 64);
+  const d = g.getImageData(0, 0, 64, 64).data;
+  let sum = 0, sq = 0, n = d.length / 4;
+  for (let i = 0; i < d.length; i += 4) { const v = (d[i] + d[i + 1] + d[i + 2]) / 3; sum += v; sq += v * v; }
+  return Math.sqrt(sq / n - (sum / n) ** 2) < 6;
 }
 
 function reset() { input.value = ""; preview.removeAttribute("src"); go(1); }
