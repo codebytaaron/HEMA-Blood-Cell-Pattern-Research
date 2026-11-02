@@ -9,8 +9,14 @@ const ORDER = ["Neutrophil", "Lymphocyte", "Monocyte", "Eosinophil"];
 const $ = id => document.getElementById(id);
 const input = $("file"), drop = $("drop"), preview = $("preview");
 
-$("samples").innerHTML = ORDER.map(n =>
-  `<button class="sample" type="button" data-src="samples/${n.toLowerCase()}.jpg"><img src="samples/${n.toLowerCase()}.jpg" alt=""><span>${n}</span></button>`).join("");
+$("samples").innerHTML = ORDER.map(n => `
+  <button class="sample" type="button" data-src="samples/${n.toLowerCase()}.jpg" aria-describedby="tip-${n}">
+    ${n}
+    <span class="tip" role="tooltip" id="tip-${n}">
+      <img src="samples/${n.toLowerCase()}.jpg" alt="" loading="lazy">
+      <span><strong>${n}</strong>${ABOUT[n]}<em>Click to analyze this sample</em></span>
+    </span>
+  </button>`).join("");
 
 let model;
 const ready = tmImage.load("model/model.json", "model/metadata.json")

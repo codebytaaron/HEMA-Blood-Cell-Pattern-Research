@@ -147,7 +147,6 @@ h1{font:700 clamp(38px,4.6vw,56px)/1.05 var(--sans);letter-spacing:-.035em;margi
 .try{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;font-size:14px;color:var(--muted)}
 .sample-row{display:flex;gap:8px;flex-wrap:wrap}
 .sample-row .sample{width:auto;height:auto;display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;font-size:13px;color:var(--ink)}
-.sample-row .sample img{width:28px;height:28px;border-radius:50%}
 .tips{margin:22px 0 0;padding-left:18px;color:var(--muted);font-size:14px;display:grid;gap:4px}
 .err{color:var(--red);font-size:14px;margin:14px 0 0}
 .confirm{background:var(--card);border-radius:18px;padding:16px;display:grid;place-items:center}
@@ -217,3 +216,17 @@ thead th{font-size:13px;color:var(--muted);font-weight:500}
   table{font-size:14px} th,td{padding:8px}
 }
 td{white-space:nowrap}
+
+/* tool page: sample names with hover preview */
+.sample-row{position:relative;display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.sample-row .sample{width:auto;height:auto;overflow:visible;padding:8px 16px;border-radius:999px;border:1px solid var(--line);font-size:14px;font-weight:500;color:var(--ink);background:var(--surface)}
+.sample-row .sample:hover,.sample-row .sample:focus-visible{border-color:var(--ink);transform:none}
+.tip{position:absolute;left:0;bottom:calc(100% + 10px);z-index:5;width:min(340px,100%);display:flex;gap:14px;align-items:flex-start;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px -18px rgba(0,0,0,.35);font-size:13px;line-height:1.45;font-weight:400;color:var(--muted);white-space:normal;text-align:left;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s;pointer-events:none}
+.sample-row .tip img{width:84px;height:84px;object-fit:cover;border-radius:10px;flex:none}
+.tip strong{display:block;color:var(--ink);font-size:15px;font-weight:600;margin-bottom:2px}
+.tip em{display:block;font-style:normal;color:var(--ink);font-weight:500;margin-top:6px;font-size:12px}
+.sample:hover .tip,.sample:focus-visible .tip{opacity:1;visibility:visible;transform:none}
+@media (hover:none){.tip{display:none}}
+.sample-row .sample{position:relative}
+.sample-row .tip{width:340px;max-width:calc(100vw - 32px)}
+.sample-row .sample:nth-child(n+3) .tip{left:auto;right:0}
