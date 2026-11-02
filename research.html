@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><text x='16' y='23' font-family='Georgia' font-size='19' fill='white' text-anchor='middle'>H</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -38,22 +38,14 @@
   <section class="doc-card">
     <h2>Data</h2>
     <p>Images come from a public dataset of 17,092 normal peripheral blood cell images collected at the Hospital Clinic of Barcelona between 2015 and 2019 <a class="ref" href="#r1">[1]</a>. Smears were stained with May Grünwald-Giemsa, each cell was photographed by a CellaVision DM96 analyzer at 360 × 363 pixels, and every image was labelled by expert clinical pathologists. Donors had no infection, blood disease or cancer and were taking no medication at the time of collection.</p>
-    <ul>
-      <li><strong>Subset.</strong> 1,200 images were drawn at random from each of four classes: eosinophil, lymphocyte, monocyte and neutrophil (4,800 in total).</li>
-      <li><strong>Neutrophils.</strong> The dataset's neutrophil class mixes mature segmented cells and younger band cells; in Hemra's subset about half are band forms.</li>
-      <li><strong>Split.</strong> Within each class, every fifth image went to the test set: 3,840 training and 960 test images, 240 per class. The full list is published as <a href="research/split.txt">split.txt</a>.</li>
-    </ul>
+    <p>Hemra uses a balanced subset of four cell types: eosinophil, lymphocyte, monocyte and neutrophil. The dataset's neutrophil class includes both mature segmented cells and younger band cells. Images were held out for testing and never used in training: 3,840 training and 960 test images, 240 per class.</p>
   </section>
 
   <section class="doc-card">
-    <h2>Method</h2>
-    <ul>
-      <li><strong>Features.</strong> A MobileNetV2 network, taken frozen from a Google Teachable Machine export, turns each image into 1,280 numbers that describe its shapes, textures and colours.</li>
-      <li><strong>Classifier.</strong> A small two-layer network (100 hidden units, then 4 outputs) was trained on those features to pick a cell type.</li>
-      <li><strong>Pre-processing.</strong> Each image is centre-cropped to a square and resized to 224 × 224 pixels. Training also used a mirrored copy of every image.</li>
-      <li><strong>Training.</strong> Adam optimiser (learning rate 0.0005), 40 epochs, batch size 64, dropout 0.3, L2 regularisation 0.001. Run in the browser with TensorFlow.js 1.3.1.</li>
-      <li><strong>Evaluation.</strong> Test images were scored through the same code the public tool uses. A prediction counts as correct when the top score matches the pathologists' label.</li>
-    </ul>
+    <h2>How it works</h2>
+    <p>Hemra uses a convolutional neural network, a type of model built to recognise visual patterns. It was pretrained on general images, then trained further on labelled blood cells to tell the four types apart.</p>
+    <p>When you analyze an image, it's cropped and resized, the model gives a score for each cell type, and the four scores add up to 100%. Everything runs in your browser; no image is sent to a server.</p>
+    <p>Test images were scored through the same code the public tool uses. A prediction counts as correct when the top score matches the pathologists' label.</p>
   </section>
 
   <section class="doc-card">
@@ -85,10 +77,8 @@
         </tbody>
       </table>
     </div>
-    <p>The most common mistake is calling a lymphocyte a monocyte (10 of 240). Both have a large nucleus and bluish cytoplasm, and large lymphocytes can look similar to monocytes <a class="ref" href="#r3">[3]</a>.</p>
+    <p>The most common mistake is calling a lymphocyte a monocyte (10 of 240). Both have a large nucleus and bluish cytoplasm, and large lymphocytes can look similar to monocytes <a class="ref" href="#r2">[2]</a>.</p>
 
-    <h3>Compared with the first version</h3>
-    <p>Hemra's first model was trained in Teachable Machine on 200 images per class. On the same 960 test images it scored 670 / 960 (69.8%), and only 21 of 240 monocytes (8.8%) were labelled correctly; most were called eosinophils, lymphocytes or neutrophils. Retraining the classifier on six times more data fixed this. The first model's training images were picked separately, so some may overlap this test set.</p>
   </section>
 
   <section class="doc-card">
@@ -135,8 +125,7 @@
     <h2>References</h2>
     <ol class="sources">
       <li id="r1">Acevedo A, Merino A, Alférez S, Molina Á, Boldú L, Rodellar J. A dataset of microscopic peripheral blood cell images for development of automatic recognition systems. <em>Data in Brief</em>. 2020;30:105474. <a href="https://doi.org/10.1016/j.dib.2020.105474" target="_blank" rel="noopener">doi:10.1016/j.dib.2020.105474</a>. Data: <a href="https://doi.org/10.17632/snkd93bnjr.1" target="_blank" rel="noopener">doi:10.17632/snkd93bnjr.1</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</li>
-      <li id="r2">Sandler M, Howard A, Zhu M, Zhmoginov A, Chen LC. MobileNetV2: Inverted residuals and linear bottlenecks. <em>CVPR</em>. 2018. <a href="https://doi.org/10.48550/arXiv.1801.04381" target="_blank" rel="noopener">arXiv:1801.04381</a>.</li>
-      <li id="r3"><a href="https://digital.haematologica.org/wp-content/uploads/flipbook/48/files/basic-html/page21.html" target="_blank" rel="noopener"><em>Haematologica Atlas of Hematologic Cytology</em></a>. Normal peripheral blood cells.</li>
+      <li id="r2"><a href="https://digital.haematologica.org/wp-content/uploads/flipbook/48/files/basic-html/page21.html" target="_blank" rel="noopener"><em>Haematologica Atlas of Hematologic Cytology</em></a>. Normal peripheral blood cells.</li>
     </ol>
   </section>
 
@@ -144,8 +133,8 @@
 </main>
 
 <footer class="wrap foot">
-  <span>Hemra · Blood Cell Pattern Research</span>
-  <span><a href="https://github.com/codebytaaron/Hemra" target="_blank" rel="noopener">GitHub</a> · <a href="index.html#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
+  <span>© 2026 Teddy Aaron · Hemra</span>
+  <span><a href="terms.html">Terms</a> · <a href="https://github.com/codebytaaron/Hemra" target="_blank" rel="noopener">GitHub</a> · <a href="index.html#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
 </footer>
 
 <script>

@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><text x='16' y='23' font-family='Georgia' font-size='19' fill='white' text-anchor='middle'>H</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -61,7 +61,7 @@
     <h2 class="h">How it works</h2>
     <ol class="how">
       <li><span>1</span><div><strong>Upload</strong><p>Choose a stained blood smear image with one white blood cell near the centre.</p></div></li>
-      <li><span>2</span><div><strong>Compare</strong><p>A MobileNetV2 model in your browser compares it with patterns learned from 3,840 cell images labelled by clinical pathologists <a class="ref" href="#src1">[1]</a>.</p></div></li>
+      <li><span>2</span><div><strong>Compare</strong><p>A neural network in your browser compares it with patterns learned from thousands of cell images labelled by clinical pathologists <a class="ref" href="#src1">[1]</a>.</p></div></li>
       <li><span>3</span><div><strong>Read</strong><p>You get a score for each cell type. On 960 held-out images from the same dataset, the top score matched the pathologists' label 97.5% of the time (<a href="research.html">see results</a>). Expect lower accuracy on images from other labs or stains.</p></div></li>
     </ol>
   </section>
@@ -90,15 +90,15 @@
       <li id="src3">MedlinePlus, U.S. National Library of Medicine. <a href="https://medlineplus.gov/lab-tests/blood-differential/" target="_blank" rel="noopener">Blood Differential</a>.</li>
       <li id="src4"><a href="https://digital.haematologica.org/wp-content/uploads/flipbook/48/files/basic-html/page21.html" target="_blank" rel="noopener"><em>Haematologica Atlas of Hematologic Cytology</em></a>. Normal peripheral blood cells.</li>
     </ol>
-    <p class="credit">All cell images, including the samples on this page, come from the dataset in [2], used under CC BY 4.0, via the copy at <a href="https://github.com/Bbennett21/White-Blood-Cell-Classification" target="_blank" rel="noopener">Bbennett21/White-Blood-Cell-Classification</a>. Changes: Hemra used a 4,800-image subset of four classes, centre-cropped and resized to 224 × 224 for training. The dataset's authors have not endorsed Hemra.</p>
+    <p class="credit">All cell images, including the samples on this page, come from the dataset in [2], used under CC BY 4.0, via the copy at <a href="https://github.com/Bbennett21/White-Blood-Cell-Classification" target="_blank" rel="noopener">Bbennett21/White-Blood-Cell-Classification</a>. Changes: Hemra uses a four-class subset of the images, cropped and resized. The dataset's authors have not endorsed Hemra.</p>
   </section>
 </main>
 
 <footer class="wrap foot">
-  <span>Hemra · Blood Cell Pattern Research</span>
-  <span><a href="https://github.com/codebytaaron/Hemra" target="_blank" rel="noopener">GitHub</a> · <a href="#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
+  <span>© 2026 Teddy Aaron · Hemra</span>
+  <span><a href="terms.html">Terms</a> · <a href="https://github.com/codebytaaron/Hemra" target="_blank" rel="noopener">GitHub</a> · <a href="#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
 </footer>
 
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>
