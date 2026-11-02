@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research &amp; teaching · HEMA</title>
-<meta name="description" content="How HEMA was built and tested: data, method, results, limitations, a classroom lesson and how to cite it.">
+<title>Research &amp; teaching · Hemra</title>
+<meta name="description" content="How Hemra was built and tested: data, method, results, limitations, a classroom lesson and how to cite it.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111'/><text x='16' y='23' font-family='Georgia' font-size='19' fill='white' text-anchor='middle'>H</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
 <header class="wrap nav">
-  <a href="index.html" class="brand">HEMA</a>
+  <a href="index.html" class="brand">Hemra</a>
   <nav><a href="index.html#how">How it works</a><a href="research.html" aria-current="page">Research</a><a href="index.html#sources">Sources</a></nav>
 </header>
 
@@ -21,7 +21,7 @@
   <section class="doc-head">
     <p class="eyebrow">For educators and researchers</p>
     <h1>Research &amp; teaching</h1>
-    <p>HEMA is free to use for learning and research. It is not for diagnosis or any medical decision.</p>
+    <p>Hemra is free to use for learning and research. It is not for diagnosis or any medical decision.</p>
   </section>
 
   <section class="doc-card">
@@ -40,7 +40,7 @@
     <p>Images come from a public dataset of 17,092 normal peripheral blood cell images collected at the Hospital Clinic of Barcelona between 2015 and 2019 <a class="ref" href="#r1">[1]</a>. Smears were stained with May Grünwald-Giemsa, each cell was photographed by a CellaVision DM96 analyzer at 360 × 363 pixels, and every image was labelled by expert clinical pathologists. Donors had no infection, blood disease or cancer and were taking no medication at the time of collection.</p>
     <ul>
       <li><strong>Subset.</strong> 1,200 images were drawn at random from each of four classes: eosinophil, lymphocyte, monocyte and neutrophil (4,800 in total).</li>
-      <li><strong>Neutrophils.</strong> The dataset's neutrophil class mixes mature segmented cells and younger band cells; in HEMA's subset about half are band forms.</li>
+      <li><strong>Neutrophils.</strong> The dataset's neutrophil class mixes mature segmented cells and younger band cells; in Hemra's subset about half are band forms.</li>
       <li><strong>Split.</strong> Within each class, every fifth image went to the test set: 3,840 training and 960 test images, 240 per class. The full list is published as <a href="research/split.txt">split.txt</a>.</li>
     </ul>
   </section>
@@ -70,10 +70,10 @@
         </tbody>
       </table>
     </div>
-    <p class="muted small">Recall: of the cells that really were this type, how many HEMA found. Precision: of the cells HEMA called this type, how many really were.</p>
+    <p class="muted small">Recall: of the cells that really were this type, how many Hemra found. Precision: of the cells Hemra called this type, how many really were.</p>
 
     <h3>Where it gets confused</h3>
-    <p>Rows are the pathologists' label; columns are HEMA's top answer.</p>
+    <p>Rows are the pathologists' label; columns are Hemra's top answer.</p>
     <div class="table-wrap">
       <table class="cm">
         <thead><tr><th></th><th>Eos</th><th>Lym</th><th>Mon</th><th>Neu</th></tr></thead>
@@ -88,22 +88,22 @@
     <p>The most common mistake is calling a lymphocyte a monocyte (10 of 240). Both have a large nucleus and bluish cytoplasm, and large lymphocytes can look similar to monocytes <a class="ref" href="#r3">[3]</a>.</p>
 
     <h3>Compared with the first version</h3>
-    <p>HEMA's first model was trained in Teachable Machine on 200 images per class. On the same 960 test images it scored 670 / 960 (69.8%), and only 21 of 240 monocytes (8.8%) were labelled correctly; most were called eosinophils, lymphocytes or neutrophils. Retraining the classifier on six times more data fixed this. The first model's training images were picked separately, so some may overlap this test set.</p>
+    <p>Hemra's first model was trained in Teachable Machine on 200 images per class. On the same 960 test images it scored 670 / 960 (69.8%), and only 21 of 240 monocytes (8.8%) were labelled correctly; most were called eosinophils, lymphocytes or neutrophils. Retraining the classifier on six times more data fixed this. The first model's training images were picked separately, so some may overlap this test set.</p>
   </section>
 
   <section class="doc-card">
     <h2>Limitations</h2>
     <ul>
       <li><strong>One source.</strong> Every image comes from one hospital, one stain and one analyzer. Images from elsewhere will likely score lower.</li>
-      <li><strong>Healthy donors only.</strong> HEMA has never seen abnormal or cancerous cells, so it cannot detect leukemia or any other condition.</li>
+      <li><strong>Healthy donors only.</strong> Hemra has never seen abnormal or cancerous cells, so it cannot detect leukemia or any other condition.</li>
       <li><strong>Split by image, not by person.</strong> The public dataset doesn't say which images came from the same person, so cells from one donor may appear in both training and test sets. This can make results look better than they would be on new patients.</li>
       <li><strong>Four classes, forced choice.</strong> Basophils, platelets, red cells, or a photo of anything else will still be scored as one of the four types.</li>
-      <li><strong>No external validation.</strong> HEMA has not been tested by an independent lab or compared with clinicians.</li>
+      <li><strong>No external validation.</strong> Hemra has not been tested by an independent lab or compared with clinicians.</li>
     </ul>
   </section>
 
   <section class="doc-card">
-    <h2>Use HEMA in your class</h2>
+    <h2>Use Hemra in your class</h2>
     <p>A 45-minute lesson on what image AI can and can't do in medicine.</p>
     <ol>
       <li><strong>Introduce (10 min).</strong> What a classifier does: it compares an image to patterns it learned. Read the <a href="index.html#how">How it works</a> section together and look at the four cell types.</li>
@@ -114,18 +114,18 @@
     <h3>Discussion questions</h3>
     <ul>
       <li>Why is a similarity score not the same as the chance someone has a disease?</li>
-      <li>HEMA still gives a confident score to a photo of a cat. What does that tell you about AI models?</li>
-      <li>Why might lymphocytes and monocytes be the pair HEMA mixes up most?</li>
-      <li>HEMA scored 97.5% on images from one hospital. Would you expect the same score on images from your local lab? Why?</li>
+      <li>Hemra still gives a confident score to a photo of a cat. What does that tell you about AI models?</li>
+      <li>Why might lymphocytes and monocytes be the pair Hemra mixes up most?</li>
+      <li>Hemra scored 97.5% on images from one hospital. Would you expect the same score on images from your local lab? Why?</li>
       <li>The model only learned from healthy people. What could go wrong if someone used it on a patient with leukemia?</li>
-      <li>Why might it matter that HEMA runs on your device instead of a server?</li>
+      <li>Why might it matter that Hemra runs on your device instead of a server?</li>
     </ul>
   </section>
 
   <section class="doc-card">
-    <h2>How to cite HEMA</h2>
+    <h2>How to cite Hemra</h2>
     <div class="cite">
-      <p id="citeText">Aaron, T. (2026). HEMA: white blood cell pattern research tool [Computer software]. https://hema-research.vercel.app/</p>
+      <p id="citeText">Aaron, T. (2026). Hemra: white blood cell pattern research tool [Computer software]. https://hemra-research.vercel.app/</p>
       <button class="copy" type="button" id="copy">Copy</button>
     </div>
     <p class="muted small">If you use the training data, also cite the dataset [1].</p>
@@ -144,8 +144,8 @@
 </main>
 
 <footer class="wrap foot">
-  <span>HEMA · Blood Cell Pattern Research</span>
-  <span><a href="https://github.com/codebytaaron/HEMA-Blood-Cell-Pattern-Research" target="_blank" rel="noopener">GitHub</a> · <a href="index.html#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
+  <span>Hemra · Blood Cell Pattern Research</span>
+  <span><a href="https://github.com/codebytaaron/Hemra" target="_blank" rel="noopener">GitHub</a> · <a href="index.html#sources">Sources</a> · Images CC BY 4.0, Acevedo et al. 2020</span>
 </footer>
 
 <script>

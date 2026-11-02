@@ -1,4 +1,4 @@
-// HEMA tool: Upload → Confirm → Results. Runs the model locally in the browser.
+// Hemra tool: Upload → Confirm → Results. Runs the model locally in the browser.
 const ABOUT = {
   Neutrophil: "The most abundant white blood cell and the body's main defense against infection. Mature cells have a segmented nucleus; younger \"band\" forms have a curved, unsegmented one.",
   Lymphocyte: "A small cell with a round nucleus and little cytoplasm. Includes B cells and T cells, which fight germs and target abnormal cells.",

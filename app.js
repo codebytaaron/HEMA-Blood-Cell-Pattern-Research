@@ -1,4 +1,4 @@
-// HEMA homepage: renders the cell cards. The tool itself lives in tool.html / tool.js.
+// Hemra homepage: renders the cell cards. The tool itself lives in tool.html / tool.js.
 // Each description cites the numbered sources in the page's Sources section.
 const CELLS = {
   Neutrophil: { text: "The most abundant white blood cell and the body's main defense against infection. Mature cells have a segmented nucleus; younger \"band\" forms have a curved, unsegmented one.", refs: [3, 4] },
