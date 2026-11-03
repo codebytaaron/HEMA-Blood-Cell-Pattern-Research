@@ -20,3 +20,7 @@ Static site: `index.html`, `style.css`, `app.js`. Serve with any static server, 
 4. [Haematologica Atlas of Hematologic Cytology](https://digital.haematologica.org/wp-content/uploads/flipbook/48/files/basic-html/page21.html), normal peripheral blood cells.
 
 **For research and education only. Not a medical device; does not diagnose any condition.**
+
+## License
+
+© 2026 Teddy Aaron. All rights reserved. The code is public to view only. You may not copy, reuse, deploy or redistribute it without written permission. Sample images from the dataset above stay under CC BY 4.0. See [LICENSE](LICENSE).
